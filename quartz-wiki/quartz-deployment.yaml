@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quartz-rst-deployment
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: quartz-rst
+  template:
+    metadata:
+      labels:
+        app: quartz-rst
+    spec:
+      containers:
+      - image: us.icr.io/rtiffany/quartz-rst:latest
+        name: quartz-rst
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quartz-rst-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: quartz-rst
